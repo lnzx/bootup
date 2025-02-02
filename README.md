@@ -33,3 +33,8 @@ bun run build
 ```sh
 bun lint
 ```
+
+# 环境变量
+
+`USERNAME`
+`PASSWORD`

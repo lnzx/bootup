@@ -4,6 +4,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Bell, CircleUser, Menu, Zap, Search, Server } from 'lucide-vue-next'
+
+const logout = () => {
+  localStorage.removeItem('token')
+  Location.href = '/'
+}
 </script>
 
 <template>
@@ -72,7 +77,7 @@ import { Bell, CircleUser, Menu, Zap, Search, Server } from 'lucide-vue-next'
             <DropdownMenuSeparator />
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </header>

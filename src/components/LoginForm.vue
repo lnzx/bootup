@@ -3,9 +3,22 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ref } from 'vue'
+import axios from 'axios'
+
+const username = ref('')
+const password = ref('')
 
 const login = () => {
-  location.href = '/nodes'
+  if (username.value && password.value) {
+    axios.post('/api/login', { username: username.value, password: password.value }).then((res) => {
+      const data = res.data
+      if (data && data.token) {
+        localStorage.setItem('token', data.token)
+        location.href = '/nodes'
+      }
+    })
+  }
 }
 </script>
 
@@ -19,14 +32,14 @@ const login = () => {
       <div class="grid gap-4">
         <div class="grid gap-2">
           <Label for="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Input id="email" type="email" placeholder="m@example.com" required v-model="username" />
         </div>
         <div class="grid gap-2">
           <div class="flex items-center">
             <Label for="password">Password</Label>
             <a href="#" class="ml-auto inline-block text-sm underline"> Forgot your password? </a>
           </div>
-          <Input id="password" type="password" required />
+          <Input id="password" type="password" required v-model="password" />
         </div>
         <Button type="submit" class="w-full" @click="login"> Login </Button>
       </div>
