@@ -16,7 +16,7 @@ const key = ref('')
 const secret = ref('')
 const region = ref('')
 
-const instance = ref('')
+const instanceJson = ref('')
 
 const getInstances = () => {
   if (key.value && secret.value && region.value) {
@@ -29,7 +29,7 @@ const getInstances = () => {
         },
       })
       .then((res) => {
-        instance.value = JSON.stringify(res.value, null, 2)
+        instanceJson.value = JSON.stringify(res.data, null, 2)
       })
   }
 }
@@ -136,12 +136,9 @@ const getCpu = () => {}
       <div class="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
         <Badge variant="outline" class="absolute right-3 top-3"> Output </Badge>
         <div class="flex-1">
-          <div class="flex items-center space-x-2">
-            <pre class="bg-gray-100 dark:bg-gray-800 rounded-md p-3 overflow-x-auto font-mono text-sm whitespace-pre-wrap">
-         {{ formattedJson }}
-       </pre
-            >
-          </div>
+          <pre class="bg-gray-100 dark:bg-gray-800 rounded-md p-3 overflow-x-auto font-mono text-sm whitespace-pre-wrap">
+         {{ instanceJson }}
+          </pre>
         </div>
 
         <form class="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
