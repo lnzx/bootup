@@ -16,7 +16,7 @@ const key = ref('')
 const secret = ref('')
 const region = ref('')
 
-const instanceJson = ref('')
+const instances = ref('')
 
 const getInstances = () => {
   if (key.value && secret.value && region.value) {
@@ -29,7 +29,11 @@ const getInstances = () => {
         },
       })
       .then((res) => {
-        instanceJson.value = JSON.stringify(res.data, null, 2)
+        instances.value = JSON.stringify(res.data, null, 2)
+      })
+      .catch((error) => {
+        console.error('Error fetching instances:', error)
+        instances.value = ''
       })
   }
 }
@@ -137,7 +141,7 @@ const getCpu = () => {}
         <Badge variant="outline" class="absolute right-3 top-3"> Output </Badge>
         <div class="flex-1">
           <pre class="bg-gray-100 dark:bg-gray-800 rounded-md p-3 overflow-x-auto font-mono text-sm whitespace-pre-wrap">
-         {{ instanceJson }}
+         {{ instances }}
           </pre>
         </div>
 
