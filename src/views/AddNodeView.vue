@@ -19,7 +19,13 @@ const region = ref('')
 const instances = ref('')
 
 const getInstances = () => {
+  if (!region.value || !key.value || !secret.value) {
+    instances.value = '请输入 key secret regin'
+    return
+  }
+
   if (key.value && secret.value && region.value) {
+    instances.value = '查询中...'
     axios
       .get('/api/ec2', {
         params: {
@@ -33,7 +39,7 @@ const getInstances = () => {
       })
       .catch((error) => {
         console.error('Error fetching instances:', error)
-        instances.value = ''
+        instances.value = '查询失败:' + (error.message || error)
       })
   }
 }
