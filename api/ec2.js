@@ -18,20 +18,21 @@ export default async function handler(req, res) {
 
   // 检查 Reservations 和 Instances 是否存在
   if (rsp.Reservations && rsp.Reservations.length > 0) {
-    const instances = rsp.Reservations.flatMap((reservation) => reservation.Instances) // 将所有实例扁平化
-    if (instances.length > 0) {
-      const instance = instances[0] // 取第一个实例
-
-      const data = {
-        id: instance.InstanceId,
-        type: instance.InstanceType,
-        state: instance.State.Name,
-        ip: instance.PublicIpAddress,
-        time: instance.LaunchTime ? instance.LaunchTime.toISOString() : '', // 处理 LaunchTime 可能为空的情况
-      }
-
-      res.status(200).json(data)
+    const instances = rsp?.Reservations?.flatMap((reservation) => reservation.Instances) || []
+    if (instances.length === 0) {
+      return res.status(404).json({ message: 'No instances found.' })
     }
+
+    const instance = instances[0] // 取第一个实例
+    const data = {
+      id: instance.InstanceId,
+      type: instance.InstanceType,
+      state: instance.State.Name,
+      ip: instance.PublicIpAddress,
+      time: instance.LaunchTime ? instance.LaunchTime.toISOString() : '', // 处理 LaunchTime 可能为空的情况
+    }
+
+    res.status(200).json(data)
   } else {
     res.status(404).json({ message: 'No instances found.' })
   }
