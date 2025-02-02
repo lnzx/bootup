@@ -10,6 +10,7 @@ const username = ref('')
 const password = ref('')
 
 const login = () => {
+  console.log(username.value, password.value)
   if (username.value && password.value) {
     axios.post('/api/login', { username: username.value, password: password.value }).then((res) => {
       const data = res.data
@@ -31,8 +32,8 @@ const login = () => {
     <CardContent>
       <div class="grid gap-4">
         <div class="grid gap-2">
-          <Label for="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required v-model="username" />
+          <Label for="username">Email</Label>
+          <Input id="username" type="email" placeholder="m@example.com" required v-model="username" />
         </div>
         <div class="grid gap-2">
           <div class="flex items-center">
@@ -41,7 +42,7 @@ const login = () => {
           </div>
           <Input id="password" type="password" required v-model="password" />
         </div>
-        <Button type="submit" class="w-full" @click="login"> Login </Button>
+        <Button type="button" class="w-full" @click="login"> Login </Button>
       </div>
       <div class="mt-4 text-center text-sm">
         Don't have an account?
