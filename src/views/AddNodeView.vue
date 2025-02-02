@@ -20,9 +20,17 @@ const instances = ref([])
 
 const getInstances = () => {
   if (key.value && secret.value && region.value) {
-    axios.get('/api/ec2', { key: key.value, secret: secret.value, region: region.value }).then((res) => {
-      console.log(res.data)
-    })
+    axios
+      .get('/api/ec2', {
+        params: {
+          key: key.value,
+          secret: secret.value,
+          region: region.value,
+        },
+      })
+      .then((res) => {
+        console.log(res.data)
+      })
   }
 }
 
