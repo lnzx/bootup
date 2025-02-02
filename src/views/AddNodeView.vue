@@ -16,7 +16,7 @@ const key = ref('')
 const secret = ref('')
 const region = ref('')
 
-const instances = ref([])
+const instance = ref('')
 
 const getInstances = () => {
   if (key.value && secret.value && region.value) {
@@ -29,14 +29,12 @@ const getInstances = () => {
         },
       })
       .then((res) => {
-        console.log(res.data)
+        instance.value = JSON.stringify(res.value, null, 2)
       })
   }
 }
 
-const getCpu = () => {
-  instances.value = [{ id: 'id-11111111' }, { id: 'id-222222222' }]
-}
+const getCpu = () => {}
 </script>
 
 <template>
@@ -139,7 +137,10 @@ const getCpu = () => {
         <Badge variant="outline" class="absolute right-3 top-3"> Output </Badge>
         <div class="flex-1">
           <div class="flex items-center space-x-2">
-            <label id="terms" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"> Accept terms and conditions </label>
+            <pre class="bg-gray-100 dark:bg-gray-800 rounded-md p-3 overflow-x-auto font-mono text-sm whitespace-pre-wrap">
+         {{ formattedJson }}
+       </pre
+            >
           </div>
         </div>
 
