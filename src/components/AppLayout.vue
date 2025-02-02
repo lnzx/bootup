@@ -7,7 +7,7 @@ import { Bell, CircleUser, Menu, Zap, Search, Server } from 'lucide-vue-next'
 
 const logout = () => {
   localStorage.removeItem('token')
-  Location.href = '/'
+  location.href = '/'
 }
 </script>
 

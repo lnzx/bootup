@@ -19,16 +19,17 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
-      children: [
-        {
-          path: 'add',
-          name: 'node-add',
-          // route level code-splitting
-          // this generates a separate chunk (About.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
-          component: () => import('@/views/AddNodeView.vue'),
-        },
-      ],
+    },
+    {
+      path: '/nodes/add',
+      name: 'node-add',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('@/views/AddNodeView.vue'),
+      meta: {
+        requiresAuth: true,
+      },
     },
   ],
 })
