@@ -21,7 +21,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/nodes/add',
+          path: 'add',
           name: 'node-add',
           // route level code-splitting
           // this generates a separate chunk (About.[hash].js) for this route
