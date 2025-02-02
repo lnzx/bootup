@@ -12,10 +12,18 @@ import AppLayout from '@/components/AppLayout.vue'
 import { ref } from 'vue'
 import axios from 'axios'
 
+const key = ref('')
+const secret = ref('')
+const region = ref('')
+
 const instances = ref([])
 
 const getInstances = () => {
-  axios.get('/api/cpu')
+  if (key.value && secret.value && region.value) {
+    axios.get('/api/ec2', { key: key.value, secret: secret.value, region: region.value }).then((res) => {
+      console.log(res.data)
+    })
+  }
 }
 
 const getCpu = () => {
@@ -32,15 +40,15 @@ const getCpu = () => {
             <legend class="-ml-1 px-1 text-sm font-medium">添加实例</legend>
             <div class="grid gap-3">
               <Label for="keyId">Access Key ID</Label>
-              <Input id="keyId" type="input" placeholder="Access Key ID" />
+              <Input id="keyId" type="input" placeholder="Access Key ID" v-model="key" />
             </div>
             <div class="grid gap-3">
               <Label for="secret">Secret Access Key</Label>
-              <Input id="secret" type="input" placeholder="Secret Access Key" />
+              <Input id="secret" type="input" placeholder="Secret Access Key" v-model="secret" />
             </div>
             <div class="grid gap-3">
               <Label for="region">区域</Label>
-              <Select id="region" default-value="us-east-1">
+              <Select id="region" default-value="us-east-1" v-model="region">
                 <SelectTrigger class="col-span-4">
                   <SelectValue placeholder="选择区域" />
                 </SelectTrigger>
