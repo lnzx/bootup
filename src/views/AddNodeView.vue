@@ -10,10 +10,15 @@ import { CornerDownLeft } from 'lucide-vue-next'
 import AppLayout from '@/components/AppLayout.vue'
 
 import { ref } from 'vue'
+import axios from 'axios'
 
 const instances = ref([])
 
-const getinstances = () => {
+const getInstances = () => {
+  axios.get('/api/cpu')
+}
+
+const getCpu = () => {
   instances.value = [{ id: 'id-11111111' }, { id: 'id-222222222' }]
 }
 </script>
@@ -76,8 +81,8 @@ const getinstances = () => {
               </Select>
             </div>
             <div class="flex justify-between gap-3">
-              <Button type="button" size="sm">查询CPU配额</Button>
-              <Button type="button" size="sm" @click="getinstances">查询已有实例</Button>
+              <Button type="button" size="sm" @click="getCpu">查询CPU配额</Button>
+              <Button type="button" size="sm" @click="getInstances">查询已有实例</Button>
             </div>
             <div class="grid gap-3">
               <Label for="os">操作系统</Label>
