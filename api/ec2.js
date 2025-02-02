@@ -6,6 +6,8 @@ export default async function handler(req, res) {
   // 从查询参数中获取 region、key 和 secret
   const { region, key, secret } = req.query
 
+  console.log('EC2 LIST parameters:', { region, key, secret }) // 添加日志
+
   const client = new EC2Client({
     region: region,
     credentials: {
