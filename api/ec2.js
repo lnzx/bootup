@@ -25,16 +25,15 @@ export default async function handler(req, res) {
       return res.status(404).json({ message: 'No instances found.' })
     }
 
-    const instance = instances[0] // 取第一个实例
-    const data = {
+    const formattedInstances = instances.map((instance) => ({
       id: instance.InstanceId,
       type: instance.InstanceType,
-      state: instance.State.Name,
-      ip: instance.PublicIpAddress,
-      time: instance.LaunchTime ? instance.LaunchTime.toISOString() : '', // 处理 LaunchTime 可能为空的情况
-    }
+      state: instance?.State?.Name,
+      ip: instance?.PublicIpAddress,
+      time: instance?.LaunchTime?.toISOString() || '',
+    }))
 
-    res.status(200).json(data)
+    res.status(200).json(formattedInstances)
   } else {
     res.status(404).json({ message: 'No instances found.' })
   }
