@@ -8,9 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { CornerDownLeft } from 'lucide-vue-next'
 import AppLayout from '@/components/AppLayout.vue'
-
 import { ref } from 'vue'
-import axios from 'axios'
+import { useApi } from '@/composable/useApi'
+
+const api = useApi()
 
 const key = ref('')
 const secret = ref('')
@@ -26,8 +27,8 @@ const getInstances = () => {
 
   if (key.value && secret.value && region.value) {
     instances.value = '查询中...'
-    axios
-      .get('/api/ec2', {
+    api
+      .get('/api/ec2/list', {
         params: {
           key: key.value,
           secret: secret.value,

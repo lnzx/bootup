@@ -4,7 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ref } from 'vue'
-import axios from 'axios'
+import { useApi } from '@/composable/useApi'
+
+const api = useApi()
 
 const username = ref('')
 const password = ref('')
@@ -12,7 +14,7 @@ const password = ref('')
 const login = () => {
   console.log(username.value, password.value)
   if (username.value && password.value) {
-    axios.post('/api/login', { username: username.value, password: password.value }).then((res) => {
+    api.post('/api/login', { username: username.value, password: password.value }).then((res) => {
       const data = res.data
       if (data && data.token) {
         localStorage.setItem('token', data.token)

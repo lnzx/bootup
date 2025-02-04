@@ -4,9 +4,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Bell, CircleUser, Menu, Zap, Search, Server } from 'lucide-vue-next'
+import { useUserSession } from '@/stores/userSession'
+
+const userSession = useUserSession()
 
 const logout = () => {
-  localStorage.removeItem('token')
+  userSession.clearToken()
   location.href = '/'
 }
 </script>
