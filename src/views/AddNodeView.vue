@@ -39,7 +39,7 @@ const getInstances = () => {
       })
       .catch((error) => {
         console.error('Error fetching instances:', error)
-        instances.value = '查询失败:' + (error.message || error)
+        instances.value = '查询失败: ' + (error.message || error)
       })
   }
 }
