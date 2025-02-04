@@ -17,35 +17,53 @@ const key = ref('')
 const secret = ref('')
 const region = ref('')
 
-const instances = ref('')
+const output = ref('')
 
 const getInstances = () => {
   if (!region.value || !key.value || !secret.value) {
-    instances.value = '请输入 key secret regin'
+    output.value = '请输入 key secret regin'
     return
   }
 
-  if (key.value && secret.value && region.value) {
-    instances.value = '查询中...'
-    api
-      .get('/api/ec2/list', {
-        params: {
-          key: key.value,
-          secret: secret.value,
-          region: region.value,
-        },
-      })
-      .then((res) => {
-        instances.value = JSON.stringify(res.data, null, 2)
-      })
-      .catch((error) => {
-        console.error('Error fetching instances:', error)
-        instances.value = '查询失败: ' + (error.message || error)
-      })
-  }
+  output.value = '查询中...'
+  api
+    .get('/api/ec2/list', {
+      params: {
+        key: key.value,
+        secret: secret.value,
+        region: region.value,
+      },
+    })
+    .then((res) => {
+      output.value = JSON.stringify(res.data, null, 2)
+    })
+    .catch((error) => {
+      output.value = '查询失败: ' + (error.message || error)
+    })
 }
 
-const getCpu = () => {}
+const getCpu = () => {
+  if (!region.value || !key.value || !secret.value) {
+    output.value = '请输入 key secret regin'
+    return
+  }
+
+  output.value = '查询中...'
+  api
+    .get('/api/ec2/cpu', {
+      params: {
+        key: key.value,
+        secret: secret.value,
+        region: region.value,
+      },
+    })
+    .then((res) => {
+      output.value = JSON.stringify(res.data, null, 2)
+    })
+    .catch((error) => {
+      output.value = '查询失败: ' + (error.message || error)
+    })
+}
 </script>
 
 <template>
@@ -148,7 +166,7 @@ const getCpu = () => {}
         <Badge variant="outline" class="absolute right-3 top-3"> Output </Badge>
         <div class="flex-1">
           <pre class="bg-gray-100 dark:bg-gray-800 rounded-md p-3 overflow-x-auto font-mono text-sm whitespace-pre-wrap">
-         {{ instances }}
+         {{ output }}
           </pre>
         </div>
 
