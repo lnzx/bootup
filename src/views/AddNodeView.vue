@@ -16,6 +16,10 @@ const api = useApi()
 const key = ref('')
 const secret = ref('')
 const region = ref('')
+const name = ref('')
+const type = ref('')
+const os = ref('')
+const userData = ref('')
 
 const output = ref('')
 
@@ -62,6 +66,36 @@ const getCpu = () => {
     })
     .catch((error) => {
       output.value = '查询失败: ' + (error.message || error)
+    })
+}
+
+const add = () => {
+  if (!region.value || !key.value || !secret.value) {
+    output.value = '请输入 key secret regin'
+    return
+  }
+  console.log(name.value, os.value, type.value, userData.value)
+
+  api
+    .post('/api/ec2/add', {
+      key: key.value,
+      secret: secret.value,
+      region: region.value,
+      name: name.value,
+      os: os.value,
+      type: type.value,
+      userData: userData.value,
+    })
+    .then((res) => {
+      const id = res.data
+      if (id) {
+        output.value = '创建成功,实例ID: ' + id
+      } else {
+        output.value = '创建实例失败'
+      }
+    })
+    .catch((error) => {
+      output.value = '创建实例失败: ' + (error.message || error)
     })
 }
 </script>
@@ -128,12 +162,16 @@ const getCpu = () => {
               <Button type="button" size="sm" @click="getInstances">查询已有实例</Button>
             </div>
             <div class="grid gap-3">
+              <Label for="name">名称</Label>
+              <Input id="name" type="input" readonly placeholder="实例名称" v-model="name" />
+            </div>
+            <div class="grid gap-3">
               <Label for="os">操作系统</Label>
-              <Input id="os" type="input" readonly placeholder="ubuntu 24.04 64 位（ARM）" value="ubuntu 24.04 64 位（ARM）" />
+              <Input id="os" type="input" v-model="os" readonly placeholder="ubuntu 24.04 64 位（ARM）" value="ubuntu 24.04 64 位（ARM）" />
             </div>
             <div class="grid gap-3">
               <Label for="role">实例类型</Label>
-              <Select default-value="t2.micro">
+              <Select default-value="t2.micro" id="type" v-model="type">
                 <SelectTrigger>
                   <SelectValue placeholder="选择实例类型" />
                 </SelectTrigger>
@@ -146,19 +184,19 @@ const getCpu = () => {
             </div>
             <div class="grid gap-3">
               <Label for="userdata">UserData</Label>
-              <Select>
+              <Select v-model="userData">
                 <SelectTrigger>
                   <SelectValue placeholder="选择UserData" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ssh"> 开启ssh root密码登录 </SelectItem>
+                  <SelectItem value="1"> 开启ssh root密码登录 </SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </fieldset>
 
           <div class="grid w-full gap-2">
-            <Button type="button">确定添加实例</Button>
+            <Button type="button" @click="add">确定添加实例</Button>
           </div>
         </form>
       </div>
