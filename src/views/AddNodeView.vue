@@ -74,6 +74,7 @@ const add = () => {
     output.value = '请输入 key secret regin'
     return
   }
+  console.log(key.value, secret.value, region.value)
   console.log(name.value, os.value, type.value, userData.value)
 
   if (!name.value || !os.value || !type.value) {
@@ -172,7 +173,7 @@ const add = () => {
             </div>
             <div class="grid gap-3">
               <Label for="os">操作系统</Label>
-              <Input id="os" type="input" v-memo="os" v-model="os" readonly placeholder="ubuntu 24.04 64 位（ARM）" value="ubuntu 24.04 64 位（ARM）" />
+              <Input id="os" type="input" v-model="os" placeholder="ubuntu 24.04 64 位（ARM）" value="ubuntu 24.04 64 位（ARM）" />
             </div>
             <div class="grid gap-3">
               <Label for="role">实例类型</Label>

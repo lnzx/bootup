@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 
   // 执行创建命令
   const command = new RunInstancesCommand({
-    ImageId: req.body.amiId, // 必须指定 AMI ID
+    ImageId: req.body.os, // 必须指定 AMI ID 先前台输入，后面优化
     InstanceType: req.body.type, // 例如 t2.micro
     MinCount: 1,
     MaxCount: 1,
