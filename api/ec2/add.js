@@ -1,39 +1,20 @@
-import { EC2Client, RunInstancesCommand, DescribeSecurityGroupsCommand } from '@aws-sdk/client-ec2'
+import { EC2Client, RunInstancesCommand, AuthorizeSecurityGroupIngressCommand } from '@aws-sdk/client-ec2'
 import path from 'path'
 import fs from 'fs/promises'
+import { getEC2Client } from './client'
 
 export default async function handler(req, res) {
   const body = req.body
-
   console.log(body)
+  const client = getEC2Client(body.region, body.key, body.secret)
 
-  const client = new EC2Client({
-    region: body.region,
-    credentials: {
-      accessKeyId: body.key,
-      secretAccessKey: body.secret,
-    },
-  })
-
-  const describeCommand = new DescribeSecurityGroupsCommand({
-    Filters: [
-      {
-        Name: 'group-name',
-        Values: ['default'],
-      },
-    ],
-  })
-
-  const response = await client.send(describeCommand)
-  if (!response.SecurityGroups?.[0]?.GroupId) {
-    throw new Error('Default security group not found')
-  }
-  const groupId = response.SecurityGroups[0].GroupId
-  console.log('groupId:', groupId)
+  // 调用安全组规则添加函数
+  await tryAuthorizeSecurityGroupIngress(client)
 
   const filePath = path.join(process.cwd(), 'scripts', 'UserData.sh')
   let content = await fs.readFile(filePath, 'utf8')
   content = content.replaceAll('aws-XXXX', body.name)
+  console.log(content)
   const base64Content = Buffer.from(content).toString('base64')
 
   // 执行创建命令
@@ -43,7 +24,6 @@ export default async function handler(req, res) {
     MinCount: 1,
     MaxCount: 1,
     UserData: base64Content,
-    SecurityGroupIds: [groupId], // 安全组
     TagSpecifications: [
       {
         ResourceType: 'instance',
@@ -53,6 +33,44 @@ export default async function handler(req, res) {
   })
 
   const rsp = await client.send(command)
-  const id = rsp.Instances[0].InstanceId
-  res.status(200).json(id)
+
+  // 添加判断，确保 rsp.Instances 存在且不为空
+  if (rsp.Instances && rsp.Instances.length > 0) {
+    const id = rsp.Instances[0].InstanceId
+    res.status(200).json(id)
+  } else {
+    // 如果没有创建任何实例，则返回一个错误响应
+    console.error('创建 EC2 实例失败，没有返回任何实例信息')
+    res.status(500).json({ error: '创建 EC2 实例失败' })
+  }
+}
+
+// 提取的安全组规则添加函数
+async function tryAuthorizeSecurityGroupIngress(client) {
+  await client
+    .send(
+      new AuthorizeSecurityGroupIngressCommand({
+        GroupName: 'default',
+        IpPermissions: [
+          {
+            IpProtocol: '-1', // 所有协议
+            IpRanges: [
+              {
+                CidrIp: '0.0.0.0/0', // 所有IP
+              },
+            ],
+          },
+        ],
+      }),
+    )
+    .then(() => {
+      console.log('安全组规则添加成功')
+    })
+    .catch((sgError) => {
+      if (sgError.name === 'InvalidPermission.Duplicate') {
+        console.log('安全组规则已存在，跳过添加')
+      } else {
+        console.error('添加安全组规则失败:', sgError)
+      }
+    })
 }
