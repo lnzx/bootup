@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   if (rsp.Reservations && rsp.Reservations.length > 0) {
     const instances = rsp?.Reservations?.flatMap((reservation) => reservation.Instances) || []
     if (instances.length === 0) {
-      return res.status(404).json({ message: 'No instances found.' })
+      return res.status(200).json({ message: 'No instances found.' })
     }
 
     const formattedInstances = instances.map((instance) => ({
@@ -33,6 +33,6 @@ export default async function handler(req, res) {
 
     res.status(200).json(formattedInstances)
   } else {
-    res.status(404).json({ message: 'No instances found.' })
+    res.status(200).json({ message: 'No instances found.' })
   }
 }
