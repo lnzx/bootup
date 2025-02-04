@@ -167,7 +167,7 @@ const add = () => {
             </div>
             <div class="grid gap-3">
               <Label for="name">名称</Label>
-              <Input id="name" type="input" readonly placeholder="实例名称" v-model="name" />
+              <Input id="name" type="input" placeholder="实例名称" v-model="name" />
             </div>
             <div class="grid gap-3">
               <Label for="os">操作系统</Label>
