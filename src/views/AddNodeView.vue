@@ -74,6 +74,10 @@ const add = () => {
     output.value = '请输入 key secret regin'
     return
   }
+  if (!name.value || !os.value || !type.value) {
+    output.value = '请输入 名称 操作系统 实例类型'
+    return
+  }
   console.log(name.value, os.value, type.value, userData.value)
 
   api
