@@ -1,6 +1,6 @@
 import { DescribeInstancesCommand } from '@aws-sdk/client-ec2'
 
-import { getEC2Client } from './client'
+import { getEC2Client } from './client.js'
 
 const command = new DescribeInstancesCommand({})
 

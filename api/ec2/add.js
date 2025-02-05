@@ -1,7 +1,7 @@
-import { EC2Client, RunInstancesCommand, AuthorizeSecurityGroupIngressCommand } from '@aws-sdk/client-ec2'
+import { RunInstancesCommand, AuthorizeSecurityGroupIngressCommand } from '@aws-sdk/client-ec2'
 import path from 'path'
 import fs from 'fs/promises'
-import { getEC2Client } from './client'
+import { getEC2Client } from './client.js'
 
 export default async function handler(req, res) {
   const body = req.body
