@@ -32,7 +32,15 @@ getNodes()
       <div class="flex items-center">
         <h1 class="text-lg font-semibold md:text-2xl">实例</h1>
       </div>
-      <div v-if="nodes.length === 0" class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+
+      <div v-if="loading" class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+        <div class="flex flex-col items-center gap-1 text-center">
+          <p class="text-sm text-muted-foreground">加载中...</p>
+          <!-- 可以添加一个加载动画 -->
+        </div>
+      </div>
+
+      <div v-else-if="nodes.length === 0" class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
         <div class="flex flex-col items-center gap-1 text-center">
           <h3 class="text-2xl font-bold tracking-tight">您还没有实例</h3>
           <p class="text-sm text-muted-foreground">点击添加实例按钮即可添加实例</p>
