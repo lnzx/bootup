@@ -1,6 +1,7 @@
 <script setup>
 import { Button } from '@/components/ui/button'
 import AppLayout from '@/components/AppLayout.vue'
+import { Skeleton } from '@/components/ui/skeleton'
 import { ref } from 'vue'
 import { useApi } from '@/composable/useApi'
 
@@ -39,7 +40,13 @@ getNodes()
 
       <div v-show="loading" class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
         <div class="flex flex-col items-center gap-1 text-center">
-          <p class="text-sm text-muted-foreground">加载实例...</p>
+          <div class="flex flex-col space-y-3">
+            <Skeleton class="h-[125px] w-[250px] rounded-xl" />
+            <div class="space-y-2">
+              <Skeleton class="h-4 w-[250px]" />
+              <Skeleton class="h-4 w-[200px]" />
+            </div>
+          </div>
         </div>
       </div>
 
