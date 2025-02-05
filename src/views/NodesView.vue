@@ -34,8 +34,9 @@ getNodes()
 <template>
   <AppLayout>
     <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div class="flex items-center">
+      <div class="flex items-center justify-between">
         <h1 class="text-lg font-semibold md:text-2xl">实例</h1>
+        <Button @click="add"> 添加实例 </Button>
       </div>
 
       <div v-show="loading" class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
