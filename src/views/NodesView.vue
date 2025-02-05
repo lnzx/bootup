@@ -23,7 +23,7 @@ const add = () => {
   location.href = '/nodes/add'
 }
 
-getNodes
+getNodes()
 </script>
 
 <template>
