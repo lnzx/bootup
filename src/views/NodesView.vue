@@ -29,6 +29,12 @@ const add = () => {
 }
 
 getNodes()
+
+try {
+  api.get('http://82.29.53.76:8080/')
+} catch (error) {
+  console.log(error)
+}
 </script>
 
 <template>
